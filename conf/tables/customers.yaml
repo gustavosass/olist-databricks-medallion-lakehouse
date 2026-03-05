@@ -1,0 +1,36 @@
+table: customers
+
+file:
+  format: csv
+  header: true
+  sep: ","
+
+schema:
+  mode: strict   # strict | evolve (se quiser prever evolução depois)
+  columns:
+    - name: customer_id
+      type: string
+      nullable: false
+
+    - name: customer_unique_id
+      type: string
+      nullable: false
+
+    - name: customer_zip_code_prefix
+      type: int
+      nullable: true
+
+    - name: customer_city
+      type: string
+      nullable: true
+
+    - name: customer_state
+      type: string
+      nullable: true
+
+keys:
+  primary_key: [customer_id]
+
+targets:
+  bronze: bronze.customers
+  silver: silver.customers
