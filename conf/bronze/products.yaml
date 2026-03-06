@@ -1,0 +1,11 @@
+dataset: products
+
+file:
+  format: csv
+  header: true
+  sep: ","
+
+target:
+  catalog: olist
+  schema: bronze
+  table: products

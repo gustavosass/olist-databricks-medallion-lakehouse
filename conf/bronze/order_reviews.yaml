@@ -1,0 +1,11 @@
+dataset: order_reviews
+
+file:
+  format: csv
+  header: true
+  sep: ","
+
+target:
+  catalog: olist
+  schema: bronze
+  table: order_reviews
