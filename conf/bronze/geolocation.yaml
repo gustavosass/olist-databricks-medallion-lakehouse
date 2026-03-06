@@ -1,0 +1,11 @@
+dataset: geolocation
+
+file:
+  format: csv
+  header: true
+  sep: ","
+
+target:
+  catalog: olist
+  schema: bronze
+  table: geolocation
