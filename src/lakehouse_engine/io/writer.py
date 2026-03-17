@@ -1,0 +1,60 @@
+from pyspark.sql import DataFrame
+from delta.tables import DeltaTable
+import os
+
+class DataFrameWriter:
+
+    def __init__(self, spark):
+        self.spark = spark
+        self.is_databricks = "DATABRICKS_RUNTIME_VERSION" in os.environ
+    
+    def write_delta_stream(self, df: DataFrame, target_table: str, 
+                          checkpoint_path: str, mode: str = "append") -> None:
+        (
+            df
+            .writeStream
+            .outputMode(mode)
+            .format("delta")
+            .option("checkpointLocation", checkpoint_path)
+            .trigger(availableNow=True)
+            .toTable(target_table)
+        )
+
+    def write_delta_batch(self, df: DataFrame, target_table: str, mode: str = "append") -> None:
+        (
+            df
+            .write
+            .format("delta")
+            .mode(mode)
+            .saveAsTable(target_table)
+        )
+    
+    def upsert_table(self, df: DataFrame, target_table: str, pk_columns: list) -> None:
+
+        table_exists = self.spark.catalog.tableExists(target_table)
+
+        if not table_exists:
+            df.write.format("delta").mode("overwrite").saveAsTable(target_table)
+            return
+   
+        df.createOrReplaceTempView("source")
+ 
+        pk_condition = " AND ".join([f"target.{pk} = source.{pk}" for pk in pk_columns])
+
+        all_columns = df.columns
+        update_columns = [col for col in all_columns if col not in pk_columns]
+        
+        vals_update = ", ".join([f"{col} = source.{col}" for col in update_columns])
+        cols_insert = ", ".join(all_columns)
+        vals_insert = ", ".join([f"source.{col}" for col in all_columns])
+
+        try:
+            self.spark.sql(f"""
+                MERGE INTO {target_table} target
+                USING source
+                ON {pk_condition}
+                WHEN MATCHED THEN UPDATE SET {vals_update}
+                WHEN NOT MATCHED THEN INSERT ({cols_insert}) VALUES ({vals_insert})
+            """)
+        except Exception as e:
+            raise

@@ -1,0 +1,41 @@
+dataset: orders
+
+source:
+  catalog: olist
+  schema: bronze
+  table: orders
+
+target:
+  catalog: olist
+  schema: silver
+  table: orders
+
+schema:
+  - column: order_id
+    type: string
+    nullable: false
+  - column: customer_id
+    type: string
+    nullable: false
+  - column: order_status
+    type: string
+    nullable: true
+  - column: order_purchase_timestamp
+    type: string
+    nullable: true
+  - column: order_approved_at
+    type: string
+    nullable: true
+  - column: order_delivered_carrier_date
+    type: string
+    nullable: true
+  - column: order_delivered_customer_date
+    type: string
+    nullable: true
+  - column: order_estimated_delivery_date
+    type: string
+    nullable: true
+
+keys:
+  primary_keys: order_id
+  version_column: _ingest_ts

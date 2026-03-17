@@ -1,0 +1,29 @@
+dataset: sellers
+
+source:
+  catalog: olist
+  schema: bronze
+  table: sellers
+
+target:
+  catalog: olist
+  schema: silver
+  table: sellers
+
+schema:
+  - column: seller_id
+    type: string
+    nullable: false
+  - column: seller_zip_code_prefix
+    type: string
+    nullable: true
+  - column: seller_city
+    type: string
+    nullable: true
+  - column: seller_state
+    type: string
+    nullable: true
+
+keys:
+  primary_keys: seller_id
+  version_column: _ingest_ts

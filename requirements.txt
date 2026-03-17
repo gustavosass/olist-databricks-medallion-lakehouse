@@ -1,0 +1,26 @@
+pyspark>=3.4.0
+pyyaml>=6.0
+pytest>=7.0
+black>=22.0
+mypy>=0.990
+zstandard>=0.25.0
+delta-spark>=3.0.0
+
+
+# Requisitos para rodar o projeto em Docker (jupyter/pyspark-notebook)
+# https://hub.docker.com/r/jupyter/pyspark-notebook
+# 
+# Como rodar o container:
+# docker run -d -p 8888:8888 -v caminho_projeto:/home/jovyan/work jupyter/pyspark-notebook
+# 
+# Identificar token para jupyter
+# docker logs sweet_galois
+#
+# Instale as dependências no container:
+# docker ps
+# docker exec -it <id_do_container> bash
+# pip install -r /home/jovyan/work/requirements.txt
+#
+# Após instalar as dependências, instale o pacote lakehouse_engine em modo editável:
+# cd /home/jovyan/work
+# pip install -e .

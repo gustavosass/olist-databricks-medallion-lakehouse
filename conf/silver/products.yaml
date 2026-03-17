@@ -1,0 +1,44 @@
+dataset: products
+
+source:
+  catalog: olist
+  schema: bronze
+  table: products
+
+target:
+  catalog: olist
+  schema: silver
+  table: products
+
+schema:
+  - column: product_id
+    type: string
+    nullable: false
+  - column: product_category_name
+    type: string
+    nullable: true
+  - column: product_name_lenght
+    type: int
+    nullable: true
+  - column: product_description_lenght
+    type: int
+    nullable: true
+  - column: product_photos_qty
+    type: int
+    nullable: true
+  - column: product_weight_g
+    type: int
+    nullable: true
+  - column: product_length_cm
+    type: int
+    nullable: true
+  - column: product_height_cm
+    type: int
+    nullable: true
+  - column: product_width_cm
+    type: int
+    nullable: true
+
+keys:
+  primary_keys: product_id
+  version_column: _ingest_ts

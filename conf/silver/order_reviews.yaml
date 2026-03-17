@@ -1,0 +1,38 @@
+dataset: order_reviews
+
+source:
+  catalog: olist
+  schema: bronze
+  table: order_reviews
+
+target:
+  catalog: olist
+  schema: silver
+  table: order_reviews
+
+schema:
+  - column: review_id
+    type: string
+    nullable: false
+  - column: order_id
+    type: string
+    nullable: false
+  - column: review_score
+    type: int
+    nullable: true
+  - column: review_comment_title
+    type: string
+    nullable: true
+  - column: review_comment_message
+    type: string
+    nullable: true
+  - column: review_creation_date
+    type: string
+    nullable: true
+  - column: review_answer_timestamp
+    type: string
+    nullable: true
+
+keys:
+  primary_keys: review_id
+  version_column: _ingest_ts
