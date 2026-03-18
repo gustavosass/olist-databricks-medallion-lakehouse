@@ -1,0 +1,15 @@
+dataset: dim_products
+
+source:
+  catalog: olist
+  schema: silver
+  table: products
+
+target:
+  catalog: olist
+  schema: gold
+  table: dim_products
+
+columns:
+  - product_id
+  - product_category_name
