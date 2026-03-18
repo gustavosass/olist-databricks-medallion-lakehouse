@@ -24,7 +24,14 @@ class DatasetConfig:
             
         with open(config_path, "r", encoding="utf-8") as f:
             self.raw_config = yaml.safe_load(f)
-            self._validate()
+
+        if not self.raw_config :
+            raise ValueError(f"Configuration file {config_path} is empty or invalid.")
+
+        self._validate()
+
+    def _validate(self) -> None:
+        pass
 
     @property
     def target_config(self) -> Dict[str, Any]:

@@ -1,0 +1,18 @@
+dataset: dim_customers
+
+source:
+  catalog: olist
+  schema: silver
+  table: customers
+
+target:
+  catalog: olist
+  schema: gold
+  table: dim_customers
+
+columns:
+  - customer_id
+  - customer_unique_id
+  - customer_city
+  - customer_state
+  - customer_zip_code_prefix
