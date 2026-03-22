@@ -6,27 +6,24 @@ class DataFrameWriter:
 
     def __init__(self, spark):
         self.spark = spark
-        self.is_databricks = "DATABRICKS_RUNTIME_VERSION" in os.environ
     
-    def write_delta_stream(self, df: DataFrame, target_table: str, 
-                          checkpoint_path: str, mode: str = "append") -> None:
-        (
-            df
-            .writeStream
-            .outputMode(mode)
-            .format("delta")
-            .option("checkpointLocation", checkpoint_path)
-            .trigger(availableNow=True)
-            .toTable(target_table)
+    def write_delta_stream(self, df: DataFrame, catalog: str, schema: str, table: str, checkpoint_location: str, mode: str = "append") -> DataFrame:
+        return (
+            df.writeStream
+                .outputMode(mode)
+                .format("delta")
+                .option("checkpointLocation", checkpoint_location)
+                .trigger(availableNow=True)
+                .toTable(f"{catalog}.{schema}.{table}")
         )
 
-    def write_delta_batch(self, df: DataFrame, target_table: str, mode: str = "append") -> None:
+    def write_delta_batch(self, df: DataFrame, catalog: str, schema: str, table: str, mode: str = "append") -> None:
         (
             df
             .write
             .format("delta")
             .mode(mode)
-            .saveAsTable(target_table)
+            .saveAsTable(f"{catalog}.{schema}.{table}")
         )
     
     def upsert_table(self, df: DataFrame, target_table: str, pk_columns: list) -> None:

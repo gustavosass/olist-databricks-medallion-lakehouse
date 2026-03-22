@@ -10,7 +10,7 @@ class DatasetConfig:
     dataset_name: str
     layer: str
     raw_config: Dict[str, Any] = field(default_factory=dict)
-    project_root = Path(__file__).resolve().parents[3]
+    project_root = Path(__file__).resolve().parents[2]
 
     def load_yaml(self):
         

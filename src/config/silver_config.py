@@ -4,7 +4,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, current_timestamp, row_number, lit
 from pyspark.sql.window import Window
 from .dataset_config import DatasetConfig
-from lakehouse_engine.schema import build_struct_schema
+from src.schema.schema_builder import build_struct_schema
 
 @dataclass
 class SilverConfig(DatasetConfig):
