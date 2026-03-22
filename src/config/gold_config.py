@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict, Any
-from .dataset_config import DatasetConfig
+from src.config.dataset_config import DatasetConfig
 
 @dataclass
 class GoldConfig(DatasetConfig):

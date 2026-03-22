@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, Any
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, lit, input_file_name
-from lakehouse_engine.config.dataset_config import DatasetConfig
+from src.config.dataset_config import DatasetConfig
 
 
 @dataclass
@@ -39,7 +39,7 @@ class BronzeConfig(DatasetConfig):
     def add_metadata(self, df: DataFrame, ingest_ts) -> DataFrame:
         df_ingest = (df
             .withColumn("_ingest_ts", lit(ingest_ts))
-            .withColumn("_source_file_path", input_file_name())
+            .withColumn("_source_file_path", col("_metadata.file_path"))
         )
         return df_ingest
 
