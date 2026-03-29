@@ -39,7 +39,7 @@ Este projeto roda apenas no Databricks. Nao ha suporte para execucao local com S
 - Cluster com DBR 18.0
 - Unity Catalog habilitado
 
-### Setup do ambiente — Azure Databricks
+### Setup do ambiente  Azure Databricks
 
 O Azure usa ADLS Gen2 como storage persistente. Todos os dados (landing, Delta tables Bronze/Silver/Gold, checkpoints e schema inference) ficam no ADLS2, fora do controle exclusivo do Databricks.
 
@@ -50,7 +50,7 @@ O Azure usa ADLS Gen2 como storage persistente. Todos os dados (landing, Delta t
 **2. Configurar External Location no Unity Catalog (Databricks UI)**
 1. Catalog → icone de engrenagem → **Credential** → criar Storage Credential (Azure Managed Identity ou Service Principal)
 2. Catalog → **External Locations** → `Create` → URL: `abfss://olist@<storage>.dfs.core.windows.net/` → vincular a credential criada
-3. Clicar em **Test connection** — deve retornar OK
+3. Clicar em **Test connection**  deve retornar OK
 
 **3. Adicionar o repositório via Repos**
 
@@ -60,8 +60,8 @@ Va em **Repos** e adicione este repositório via Git.
 
 Execute `notebooks/setup/bootstrap_azure.ipynb`. O notebook pede o nome da Storage Account via widget e cria:
 - Catalog `olist`
-- Schemas `bronze`, `silver` e `gold` com `MANAGED LOCATION` apontando para o ADLS2 — as Delta tables ficam fisicamente no seu storage
-- `EXTERNAL VOLUME` para `files`, `checkpoints` e `schema` — os arquivos brutos e metadados do Auto Loader ficam no ADLS2
+- Schemas `bronze`, `silver` e `gold` com `MANAGED LOCATION` apontando para o ADLS2  as Delta tables ficam fisicamente no seu storage
+- `EXTERNAL VOLUME` para `files`, `checkpoints` e `schema`  os arquivos brutos e metadados do Auto Loader ficam no ADLS2
 
 **5. Upload dos CSVs**
 
@@ -75,7 +75,7 @@ Alternativamente, use o Azure Storage Explorer para enviar os CSVs diretamente p
 
 ---
 
-### Setup do ambiente — Free Edition
+### Setup do ambiente  Free Edition
 
 Execute `notebooks/setup/bootstrap_free_edition.ipynb`. O notebook cria o catalog `olist` com schemas e Volumes gerenciados pelo proprio Databricks (sem storage externo).
 
@@ -146,13 +146,13 @@ As tasks de Bronze rodam todas em paralelo. Cada task de Silver depende somente 
 CSVs (Volume landing)
         |
         v
-   [ BRONZE ]  — Auto Loader → Delta append-only
+   [ BRONZE ]   Auto Loader → Delta append-only
         |
         v
-   [ SILVER ]  — Structured Streaming + foreachBatch + MERGE (SCD Type 1)
+   [ SILVER ]   Structured Streaming + foreachBatch + MERGE (SCD Type 1)
         |
         v
-   [ GOLD ]    — Batch read + overwrite → Dimensions + Facts
+   [ GOLD ]     Batch read + overwrite → Dimensions + Facts
 ```
 
 ### Bronze
