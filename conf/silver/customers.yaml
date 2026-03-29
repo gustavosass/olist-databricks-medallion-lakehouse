@@ -1,0 +1,32 @@
+dataset: customers
+
+source:
+  catalog: olist
+  schema: bronze
+  table: customers
+
+target:
+  catalog: olist
+  schema: silver
+  table: customers
+
+schema:
+  - column: customer_id
+    type: string
+    nullable: false
+  - column: customer_unique_id
+    type: string
+    nullable: false
+  - column: customer_zip_code_prefix
+    type: int
+    nullable: true
+  - column: customer_city
+    type: string
+    nullable: true
+  - column: customer_state
+    type: string
+    nullable: true
+    
+keys:
+  primary_keys: customer_id
+  version_column: _ingest_ts

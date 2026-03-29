@@ -1,0 +1,32 @@
+dataset: order_payments
+
+source:
+  catalog: olist
+  schema: bronze
+  table: order_payments
+
+target:
+  catalog: olist
+  schema: silver
+  table: order_payments
+
+schema:
+  - column: order_id
+    type: string
+    nullable: false
+  - column: payment_sequential
+    type: int
+    nullable: false
+  - column: payment_type
+    type: string
+    nullable: true
+  - column: payment_installments
+    type: int
+    nullable: true
+  - column: payment_value
+    type: double
+    nullable: true
+
+keys:
+  primary_keys: [order_id, payment_sequential]
+  version_column: _ingest_ts

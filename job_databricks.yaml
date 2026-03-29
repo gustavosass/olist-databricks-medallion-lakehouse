@@ -1,0 +1,198 @@
+resources:
+  jobs:
+    olist_pipeline:
+      name: olist_pipeline
+      tasks:
+        - task_key: bronze_customers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/01_bronze
+            base_parameters:
+              dataset: customers
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: bronze_orders
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/01_bronze
+            base_parameters:
+              dataset: orders
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: bronze_order_items
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/01_bronze
+            base_parameters:
+              dataset: order_items
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: bronze_order_reviews
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/01_bronze
+            base_parameters:
+              dataset: order_reviews
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: bronze_order_payments
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/01_bronze
+            base_parameters:
+              dataset: order_payments
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: bronze_products
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/01_bronze
+            base_parameters:
+              dataset: products
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: bronze_sellers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/01_bronze
+            base_parameters:
+              dataset: sellers
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: silver_customers
+          depends_on:
+            - task_key: bronze_customers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/02_silver
+            base_parameters:
+              dataset: customers
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: silver_orders
+          depends_on:
+            - task_key: bronze_orders
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/02_silver
+            base_parameters:
+              dataset: orders
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: silver_order_items
+          depends_on:
+            - task_key: bronze_order_items
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/02_silver
+            base_parameters:
+              dataset: order_items
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: silver_order_reviews
+          depends_on:
+            - task_key: bronze_order_reviews
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/02_silver
+            base_parameters:
+              dataset: order_reviews
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: silver_order_payments
+          depends_on:
+            - task_key: bronze_order_payments
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/02_silver
+            base_parameters:
+              dataset: order_payments
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: silver_products
+          depends_on:
+            - task_key: bronze_products
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/02_silver
+            base_parameters:
+              dataset: products
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: silver_sellers
+          depends_on:
+            - task_key: bronze_sellers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/02_silver
+            base_parameters:
+              dataset: sellers
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_dim_customers
+          depends_on:
+            - task_key: silver_customers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/03_gold
+            base_parameters:
+              dataset: dim_customers
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_dim_products
+          depends_on:
+            - task_key: silver_products
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/03_gold
+            base_parameters:
+              dataset: dim_products
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_dim_sellers
+          depends_on:
+            - task_key: silver_sellers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/03_gold
+            base_parameters:
+              dataset: dim_sellers
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_dim_dates
+          depends_on:
+            - task_key: silver_orders
+            - task_key: silver_order_items
+            - task_key: silver_order_reviews
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/gold/dim_dates
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_fact_sales
+          depends_on:
+            - task_key: silver_orders
+            - task_key: silver_order_items
+            - task_key: silver_order_payments
+            - task_key: silver_customers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/gold/fact_sales
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_fact_seller_performance
+          depends_on:
+            - task_key: silver_sellers
+            - task_key: silver_order_items
+            - task_key: silver_orders
+            - task_key: silver_order_reviews
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/gold/fact_seller_performance
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_fact_product_performance
+          depends_on:
+            - task_key: silver_products
+            - task_key: silver_order_items
+            - task_key: silver_order_reviews
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/gold/fact_product_performance
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_fact_payment_summary
+          depends_on:
+            - task_key: silver_order_payments
+            - task_key: silver_orders
+            - task_key: silver_customers
+          notebook_task:
+            notebook_path: /Repos/gustavosass@gmail.com/olist-databricks-medallion-lakehouse/notebooks/medallion/gold/fact_payment_summary
+            source: WORKSPACE
+          environment_key: Default
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED

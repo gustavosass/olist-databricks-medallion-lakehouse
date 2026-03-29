@@ -1,0 +1,38 @@
+dataset: order_items
+
+source:
+  catalog: olist
+  schema: bronze
+  table: order_items
+
+target:
+  catalog: olist
+  schema: silver
+  table: order_items
+
+schema:
+  - column: order_id
+    type: string
+    nullable: false
+  - column: order_item_id
+    type: int
+    nullable: false
+  - column: product_id
+    type: string
+    nullable: false
+  - column: seller_id
+    type: string
+    nullable: false
+  - column: shipping_limit_date
+    type: timestamp
+    nullable: true
+  - column: price
+    type: double
+    nullable: true
+  - column: freight_value
+    type: double
+    nullable: true
+
+keys:
+  primary_keys: [order_id, order_item_id]
+  version_column: _ingest_ts

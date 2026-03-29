@@ -1,0 +1,10 @@
+# Databricks Connect para DBR 18.0 (Python 3.12)
+databricks-connect>=18.0,<19
+pyyaml>=6.0
+delta-spark>=3.0.0
+
+# Desenvolvimento Local
+pytest>=7.0
+black>=22.0
+mypy>=0.990
+build>=0.10.0

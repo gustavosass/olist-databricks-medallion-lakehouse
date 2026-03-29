@@ -1,0 +1,19 @@
+dataset: order_items
+
+file:
+  format: csv
+  header: true
+  sep: ","
+  quote: '"'
+  escape: '"'
+  multiLine: true
+  mode: PERMISSIVE
+  rescuedDataColumn: _rescued_data
+  encoding: UTF-8
+  ignoreLeadingWhiteSpace: true
+  ignoreTrailingWhiteSpace: true
+
+target:
+  catalog: olist
+  schema: bronze
+  table: order_items
